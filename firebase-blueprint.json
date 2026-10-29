@@ -1,110 +1,87 @@
 {
   "entities": {
-    "UserProfile": {
-      "title": "UserProfile",
-      "description": "Public profile details for a registered or anonymous user",
+    "FriendRequest": {
+      "title": "FriendRequest",
+      "description": "Visitor membership and connection request to join the space community network",
       "type": "object",
       "properties": {
-        "id": { "type": "string", "maxLength": 128 },
-        "displayName": { "type": "string", "maxLength": 80 },
-        "photoURL": { "type": "string", "maxLength": 2048 },
-        "bio": { "type": "string", "maxLength": 500 },
-        "isAnonymous": { "type": "boolean" },
-        "createdAt": { "type": "string", "format": "date-time" },
-        "updatedAt": { "type": "string", "format": "date-time" }
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "location": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined"] },
+        "timestamp": { "type": "string" },
+        "updatedAt": { "type": "string" }
       },
-      "required": ["id", "isAnonymous"]
+      "required": ["id", "name", "email", "location", "status", "timestamp"]
     },
-    "ScamReport": {
-      "title": "ScamReport",
-      "description": "User submitted incident report for scam investigation and official agency reporting",
+    "Visitor": {
+      "title": "Visitor",
+      "description": "Visitor profile record in the community",
       "type": "object",
       "properties": {
-        "id": { "type": "string", "maxLength": 128 },
-        "userId": { "type": "string", "maxLength": 128 },
-        "caseNumber": { "type": "string", "maxLength": 32 },
-        "scamType": { "type": "string", "maxLength": 100 },
-        "amountLost": { "type": "number" },
-        "currency": { "type": "string", "maxLength": 10 },
-        "incidentDate": { "type": "string", "maxLength": 30 },
-        "paymentMethod": { "type": "string", "maxLength": 60 },
-        "transactionReference": { "type": "string", "maxLength": 150 },
-        "description": { "type": "string", "maxLength": 3000 },
-        "evidenceUrls": { "type": "array" },
-        "status": { "type": "string", "enum": ["submitted", "under_review", "escalated", "closed"] },
-        "adminNotes": { "type": "string", "maxLength": 1000 },
-        "createdAt": { "type": "string", "format": "date-time" },
-        "updatedAt": { "type": "string", "format": "date-time" }
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "location": { "type": "string" },
+        "status": { "type": "string" },
+        "lastSeen": { "type": "string" },
+        "createdAt": { "type": "string" }
       },
-      "required": ["id", "userId", "caseNumber", "scamType", "amountLost", "currency", "incidentDate", "status"]
+      "required": ["id", "name", "email"]
     },
-    "Conversation": {
-      "title": "Conversation",
-      "description": "Direct one-to-one secure chat between two verified platform sessions",
+    "PrivateChat": {
+      "title": "PrivateChat",
+      "description": "One-to-one private chat channel between visitor and admin",
       "type": "object",
       "properties": {
-        "id": { "type": "string", "maxLength": 128 },
-        "participants": { "type": "array" },
-        "participantNames": { "type": "object" },
-        "lastMessage": { "type": "string", "maxLength": 500 },
-        "lastMessageSenderId": { "type": "string", "maxLength": 128 },
-        "lastMessageAt": { "type": "string", "format": "date-time" },
-        "createdAt": { "type": "string", "format": "date-time" }
+        "id": { "type": "string" },
+        "visitorId": { "type": "string" },
+        "visitorName": { "type": "string" },
+        "visitorEmail": { "type": "string" },
+        "visitorLocation": { "type": "string" },
+        "status": { "type": "string" },
+        "lastMessage": { "type": "string" },
+        "lastMessageTime": { "type": "string" },
+        "lastSender": { "type": "string" },
+        "adminUnreadCount": { "type": "number" },
+        "visitorUnreadCount": { "type": "number" },
+        "createdAt": { "type": "string" }
       },
-      "required": ["id", "participants"]
+      "required": ["id", "visitorId", "visitorName", "status"]
     },
     "ChatMessage": {
       "title": "ChatMessage",
-      "description": "Individual message inside a private conversation",
+      "description": "Real message inside a private channel",
       "type": "object",
       "properties": {
-        "id": { "type": "string", "maxLength": 128 },
-        "conversationId": { "type": "string", "maxLength": 128 },
-        "senderId": { "type": "string", "maxLength": 128 },
-        "senderName": { "type": "string", "maxLength": 80 },
-        "text": { "type": "string", "maxLength": 2000 },
-        "imageUrl": { "type": "string", "maxLength": 2048 },
-        "status": { "type": "string", "enum": ["sent", "delivered", "read"] },
-        "createdAt": { "type": "string", "format": "date-time" }
+        "id": { "type": "string" },
+        "sender": { "type": "string", "enum": ["admin", "visitor"] },
+        "senderName": { "type": "string" },
+        "text": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "read": { "type": "boolean" }
       },
-      "required": ["id", "conversationId", "senderId", "text"]
-    },
-    "UserReport": {
-      "title": "UserReport",
-      "description": "Safety report submitted against abusive or spam content",
-      "type": "object",
-      "properties": {
-        "id": { "type": "string", "maxLength": 128 },
-        "reporterId": { "type": "string", "maxLength": 128 },
-        "targetUserId": { "type": "string", "maxLength": 128 },
-        "reason": { "type": "string", "maxLength": 100 },
-        "details": { "type": "string", "maxLength": 1000 },
-        "status": { "type": "string", "enum": ["pending", "reviewed", "resolved"] },
-        "createdAt": { "type": "string", "format": "date-time" }
-      },
-      "required": ["id", "reporterId", "targetUserId", "reason"]
+      "required": ["id", "sender", "timestamp"]
     }
   },
   "firestore": {
-    "/users/{userId}": {
-      "schema": { "$ref": "#/entities/UserProfile" },
-      "description": "Public user profile and identity metadata"
+    "/friendRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/FriendRequest" },
+      "description": "Pending and reviewed membership requests"
     },
-    "/scam_reports/{reportId}": {
-      "schema": { "$ref": "#/entities/ScamReport" },
-      "description": "User submitted financial scam incidents and recovery status tracking"
+    "/visitors/{visitorId}": {
+      "schema": { "$ref": "#/entities/Visitor" },
+      "description": "Registered visitor records"
     },
-    "/conversations/{conversationId}": {
-      "schema": { "$ref": "#/entities/Conversation" },
-      "description": "Direct private conversations between authenticated platform sessions"
+    "/privateChats/{chatId}": {
+      "schema": { "$ref": "#/entities/PrivateChat" },
+      "description": "Direct private conversation metadata"
     },
-    "/conversations/{conversationId}/messages/{messageId}": {
+    "/privateChats/{chatId}/messages/{messageId}": {
       "schema": { "$ref": "#/entities/ChatMessage" },
-      "description": "Messages belonging to a specific conversation"
-    },
-    "/user_reports/{reportId}": {
-      "schema": { "$ref": "#/entities/UserReport" },
-      "description": "Abuse and safety reports submitted by community members"
+      "description": "Encrypted real-time messages in a private channel"
     }
   }
 }

@@ -186,7 +186,7 @@ export const PrivateChatCentre: React.FC = () => {
         const mergedMap = new Map<string, ChatMessage>();
         [...localMsgs, ...firestoreMsgs].forEach(m => mergedMap.set(m.id, m));
         const merged = Array.from(mergedMap.values());
-        merged.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        merged.sort((a, b) => new Date(a.createdAt || a.timestamp || 0).getTime() - new Date(b.createdAt || b.timestamp || 0).getTime());
 
         setMessages(merged);
         saveLocalMessages(activeConversation.id, merged);
@@ -664,7 +664,7 @@ export const PrivateChatCentre: React.FC = () => {
                           <span>{isMe ? 'You' : m.senderName}</span>
                           <span>·</span>
                           <span className="font-mono">
-                            {new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            {new Date(m.createdAt || m.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>
 

@@ -1,3 +1,54 @@
+export interface FriendRequest {
+  id: string;
+  name: string;
+  email: string;
+  location: string;
+  status: 'pending' | 'accepted' | 'declined';
+  timestamp: string;
+  updatedAt?: string;
+}
+
+export interface VisitorRecord {
+  id: string;
+  name: string;
+  email: string;
+  location: string;
+  status: 'pending' | 'accepted' | 'declined' | 'active';
+  lastSeen: string;
+  createdAt: string;
+}
+
+export interface PrivateChat {
+  id: string;
+  requestId: string;
+  visitorId: string;
+  visitorName: string;
+  visitorEmail: string;
+  visitorLocation: string;
+  status: 'active' | 'closed';
+  lastMessage?: string;
+  lastMessageTime?: string;
+  lastSender?: 'admin' | 'visitor';
+  adminUnreadCount?: number;
+  visitorUnreadCount?: number;
+  createdAt: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  conversationId?: string;
+  senderId?: string;
+  sender?: 'admin' | 'visitor';
+  senderName: string;
+  senderAvatar?: string;
+  text: string;
+  imageUrl?: string;
+  timestamp?: string;
+  createdAt?: string;
+  status?: string;
+  read?: boolean;
+}
+
 export interface UserProfile {
   id: string;
   displayName: string;
@@ -63,25 +114,13 @@ export interface Conversation {
   createdAt: string;
 }
 
-export interface ChatMessage {
-  id: string;
-  conversationId: string;
-  senderId: string;
-  senderName: string;
-  senderAvatar?: string;
-  text: string;
-  imageUrl?: string;
-  status: 'sent' | 'delivered' | 'read';
-  createdAt: string;
-}
-
 export interface TeslaVehicle {
   id: string;
   name: string;
   tagline: string;
   priceUSD: number;
   rangeMiles: number;
-  acceleration0to60: number; // in seconds
+  acceleration0to60: number;
   topSpeedMph: number;
   peakPowerHp: number;
   seating: number;
@@ -112,12 +151,4 @@ export interface StockQuote {
   volume: string;
   updatedAt: string;
   history: { date: string; close: number }[];
-}
-
-export interface InvestmentGoal {
-  startingBalance: number;
-  monthlyContribution: number;
-  annualInterestRate: number;
-  years: number;
-  compoundFrequency: number;
 }
